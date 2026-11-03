@@ -50,3 +50,16 @@ npx orval --input openapi.yaml --output gen/client.ts
 5. ไล่เช็ค: ลบ catalog ที่มีหนังสือ (409), ไฟล์ไม่ใช่รูป (400), เปลี่ยนปกแล้วไฟล์เก่าถูกลบ
 
 > คอมเมนต์ในโค้ดทุกไฟล์เป็นภาษาไทย ไล่อ่านจาก `backend/server.js` ก่อนได้เลย
+
+## เวอร์ชัน HTML + JavaScript ธรรมดา (`html-version/`)
+สำหรับกรณีข้อสอบให้ HTML/CSS มาแล้วต้องเขียนแค่ JS — ใช้ backend ตัวเดิม ไม่ต้อง build
+
+```bash
+cd backend && npm install && npm start
+# เปิด http://localhost:4000/web/  (หรือเปิดไฟล์ html-version/index.html ด้วย Live Server)
+```
+- `js/api.js` ฟังก์ชันเรียก API (โหลดก่อนไฟล์อื่น) → `js/books.js` (list/ค้นหา/ลบ) → `js/book-form.js` (เพิ่ม/แก้ไข + อัปโหลด) → `js/book.js` (รายละเอียด) → `js/catalogs.js`
+- ถ้า backend ใช้ port อื่น แก้ `API_URL` ใน `js/api.js`
+
+## ฝึกเขียนเอง
+ดู `PRACTICE.md` (โจทย์จำลอง + เช็คลิสต์ + วิธีให้คะแนนตัวเอง)

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Library</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand"><span class="brand-logo">📚</span> Library</a>
+      <nav>
+        <a href="index.html">หนังสือ</a>
+        <a href="catalogs.html">Catalog</a>
+        <a href="book-form.html" class="btn btn-primary">+ เพิ่มหนังสือ</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="panel">
+      <h1>จัดการ Catalog</h1>
+      <div id="error" class="alert alert-error" style="display:none"></div>
+
+      <form class="inline-form" id="catalogForm">
+        <input class="input" id="cName" placeholder="ชื่อ catalog *" required>
+        <input class="input" id="cDesc" placeholder="คำอธิบาย">
+        <button class="btn btn-primary" id="cSave">+ เพิ่ม catalog</button>
+        <button type="button" class="btn btn-outline" id="cCancel" style="display:none">ยกเลิก</button>
+      </form>
+
+      <table class="table">
+        <thead><tr><th>#</th><th>ชื่อ</th><th>คำอธิบาย</th><th>จำนวนหนังสือ</th><th></th></tr></thead>
+        <tbody id="rows"></tbody>
+      </table>
+    </div>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/catalogs.js"></script>
+</body>
+</html>

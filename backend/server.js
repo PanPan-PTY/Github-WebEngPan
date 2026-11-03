@@ -28,6 +28,7 @@ app.use(cors());                                  // เปิด CORS
 app.use(express.json());                          // อ่าน body ที่เป็น JSON  -> req.body
 app.use(express.urlencoded({ extended: true }));  // อ่าน body แบบฟอร์มธรรมดา
 app.use("/uploads", express.static(UPLOAD_DIR));  // ให้เปิดรูปได้ที่ http://localhost:4000/uploads/ชื่อไฟล์
+app.use("/web", express.static(path.join(__dirname, "..", "html-version"))); // เปิดเว็บแบบ HTML ธรรมดาที่ http://localhost:4000/web/
 
 // ---------- 3) ฟังก์ชันช่วย (helper) ----------
 // db มีหน้าตาเป็น { catalogs: [...], books: [...] }

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Library</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand"><span class="brand-logo">📚</span> Library</a>
+      <nav>
+        <a href="index.html">หนังสือ</a>
+        <a href="catalogs.html">Catalog</a>
+        <a href="book-form.html" class="btn btn-primary">+ เพิ่มหนังสือ</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section class="hero">
+      <h1>หนังสือในห้องสมุด</h1>
+      <p>เพิ่ม แก้ไข ลบ จัดหมวดตาม catalog และอัปโหลดปกหนังสือ</p>
+    </section>
+
+    <div class="toolbar">
+      <input class="input" id="search" placeholder="🔍 ค้นหาชื่อหนังสือ / ผู้แต่ง...">
+      <select class="input" id="catalogFilter"><option value="">ทุก catalog</option></select>
+    </div>
+
+    <div id="error" class="alert alert-error" style="display:none"></div>
+    <div id="list" class="grid"></div>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/books.js"></script>
+</body>
+</html>

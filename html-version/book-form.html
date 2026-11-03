@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Library</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="brand"><span class="brand-logo">📚</span> Library</a>
+      <nav>
+        <a href="index.html">หนังสือ</a>
+        <a href="catalogs.html">Catalog</a>
+        <a href="book-form.html" class="btn btn-primary">+ เพิ่มหนังสือ</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <div class="panel">
+      <h1 id="pageTitle">เพิ่มหนังสือใหม่</h1>
+      <div id="error" class="alert alert-error" style="display:none"></div>
+
+      <form id="bookForm">
+        <div class="form-grid">
+          <div class="fields">
+            <div class="full"><label>ชื่อหนังสือ *</label><input class="input" name="title" required></div>
+            <div><label>ผู้แต่ง *</label><input class="input" name="author" required></div>
+            <div><label>Catalog *</label><select class="input" name="catalogId" id="catalogSelect" required></select></div>
+            <div><label>ราคา (บาท) *</label><input class="input" type="number" min="0" name="price" required></div>
+            <div><label>จำนวนคงเหลือ</label><input class="input" type="number" min="0" name="stock"></div>
+            <div class="full"><label>รายละเอียด</label><textarea class="input" rows="5" name="description"></textarea></div>
+          </div>
+
+          <div>
+            <label>ปกหนังสือ</label>
+            <label class="dropzone" id="dropzone">
+              <span style="font-size:40px">📷</span>
+              <span>คลิกเพื่ออัปโหลดปก</span>
+              <small>JPG / PNG / WEBP ไม่เกิน 5MB</small>
+              <input type="file" name="cover" id="coverInput" accept="image/*">
+            </label>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" id="saveBtn">บันทึก</button>
+          <a href="index.html" class="btn btn-outline">ยกเลิก</a>
+        </div>
+      </form>
+    </div>
+  </main>
+  <script src="js/api.js"></script>
+  <script src="js/book-form.js"></script>
+</body>
+</html>
