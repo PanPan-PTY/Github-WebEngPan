@@ -1,0 +1,137 @@
+openapi: 3.0.3
+info:
+  title: Library API
+  version: 1.0.0
+  description: ตัวอย่าง OpenAPI สำหรับฝึก gen code (catalogs 1—N books + อัปโหลดปก)
+servers:
+  - url: http://localhost:4000
+paths:
+  /api/catalogs:
+    get:
+      summary: รายการ catalog
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/Catalog" } }
+    post:
+      summary: เพิ่ม catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CatalogInput" }
+      responses:
+        "201": { description: Created, content: { application/json: { schema: { $ref: "#/components/schemas/Catalog" } } } }
+        "400": { description: ข้อมูลไม่ครบ }
+        "409": { description: ชื่อซ้ำ }
+  /api/catalogs/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: integer } }
+    get:
+      summary: catalog ตาม id
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/Catalog" } } } }
+        "404": { description: ไม่พบ }
+    put:
+      summary: แก้ไข catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CatalogInput" }
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/Catalog" } } } }
+        "404": { description: ไม่พบ }
+    delete:
+      summary: ลบ catalog (ลบไม่ได้ถ้ายังมีหนังสือ)
+      responses:
+        "200": { description: OK }
+        "404": { description: ไม่พบ }
+        "409": { description: ยังมีหนังสือใน catalog นี้ }
+  /api/books:
+    get:
+      summary: รายการหนังสือ (ค้นหา/กรอง)
+      parameters:
+        - { name: q, in: query, schema: { type: string } }
+        - { name: catalogId, in: query, schema: { type: integer } }
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema: { type: array, items: { $ref: "#/components/schemas/Book" } }
+    post:
+      summary: เพิ่มหนังสือ + อัปโหลดปก
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: { $ref: "#/components/schemas/BookInput" }
+      responses:
+        "201": { description: Created, content: { application/json: { schema: { $ref: "#/components/schemas/Book" } } } }
+        "400": { description: ข้อมูลไม่ถูกต้อง / ไฟล์ไม่ใช่รูป }
+  /api/books/{id}:
+    parameters:
+      - { name: id, in: path, required: true, schema: { type: integer } }
+    get:
+      summary: หนังสือตาม id
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/Book" } } } }
+        "404": { description: ไม่พบ }
+    put:
+      summary: แก้ไขหนังสือ / เปลี่ยนปก
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema: { $ref: "#/components/schemas/BookInput" }
+      responses:
+        "200": { description: OK, content: { application/json: { schema: { $ref: "#/components/schemas/Book" } } } }
+        "400": { description: ข้อมูลไม่ถูกต้อง }
+        "404": { description: ไม่พบ }
+    delete:
+      summary: ลบหนังสือ (ลบไฟล์ปกด้วย)
+      responses:
+        "200": { description: OK }
+        "404": { description: ไม่พบ }
+components:
+  schemas:
+    CatalogInput:
+      type: object
+      required: [name]
+      properties:
+        name: { type: string }
+        description: { type: string }
+    Catalog:
+      allOf:
+        - $ref: "#/components/schemas/CatalogInput"
+        - type: object
+          properties:
+            id: { type: integer }
+            bookCount: { type: integer }
+    BookInput:
+      type: object
+      required: [title, author, price, catalogId]
+      properties:
+        title: { type: string }
+        author: { type: string }
+        price: { type: number }
+        stock: { type: integer }
+        catalogId: { type: integer }
+        description: { type: string }
+        cover: { type: string, format: binary, description: "ไฟล์รูป jpg/png/gif/webp ≤ 5MB" }
+    Book:
+      type: object
+      properties:
+        id: { type: integer }
+        title: { type: string }
+        author: { type: string }
+        price: { type: number }
+        stock: { type: integer }
+        catalogId: { type: integer }
+        catalogName: { type: string }
+        description: { type: string }
+        cover: { type: string, nullable: true, example: /uploads/123.jpg }
+        createdAt: { type: string, format: date-time }

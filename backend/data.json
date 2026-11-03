@@ -1,0 +1,43 @@
+{
+  "catalogs": [
+    {
+      "id": 1,
+      "name": "นิยาย",
+      "description": "นวนิยายและเรื่องสั้น"
+    },
+    {
+      "id": 2,
+      "name": "คอมพิวเตอร์",
+      "description": "หนังสือด้านการเขียนโปรแกรมและไอที"
+    },
+    {
+      "id": 3,
+      "name": "ประวัติศาสตร์",
+      "description": "หนังสือประวัติศาสตร์และสารคดี"
+    }
+  ],
+  "books": [
+    {
+      "id": 1,
+      "title": "Clean Code",
+      "author": "Robert C. Martin",
+      "price": 890,
+      "stock": 5,
+      "catalogId": 2,
+      "description": "หลักการเขียนโค้ดให้อ่านง่าย",
+      "cover": null,
+      "createdAt": "2026-11-03T00:00:00.000Z"
+    },
+    {
+      "id": 2,
+      "title": "ปีศาจ",
+      "author": "เสนีย์ เสาวพงศ์",
+      "price": 250,
+      "stock": 12,
+      "catalogId": 1,
+      "description": "นวนิยายไทยคลาสสิก",
+      "cover": null,
+      "createdAt": "2026-11-03T00:00:00.000Z"
+    }
+  ]
+}
