@@ -41,3 +41,12 @@ npx orval --input openapi.yaml --output gen/client.ts
 - ชื่อ field ไฟล์ต้องตรงกัน: `fd.append("cover", file)` ↔ `upload.single("cover")`
 - ลบ/เปลี่ยนปกต้องลบไฟล์เก่าด้วย, ข้อมูลไม่ผ่าน validate ต้องลบไฟล์ที่เพิ่งอัปโหลด
 - Foreign key: เช็ค `catalogId` ก่อนบันทึก และกันลบ catalog ที่ยังมีหนังสือ (409)
+
+## ลำดับทำในห้องสอบ (แนะนำ)
+1. Backend: ตั้ง `express + cors + multer` และ helper อ่าน/เขียนข้อมูล (ส่วนบนของ `server.js`)
+2. ทำ CRUD ตารางแม่ (catalogs) ก่อน → ทดสอบใน Postman/Swagger
+3. ทำ CRUD ตารางลูก (books) + `validateBook` + อัปโหลดปก → ทดสอบส่งไฟล์
+4. Frontend: `lib/api.js` → หน้า list (ค้นหา/กรอง/ลบ) → `BookForm` (เพิ่ม/แก้ไข + อัปโหลด) → หน้ารายละเอียด → หน้า catalogs
+5. ไล่เช็ค: ลบ catalog ที่มีหนังสือ (409), ไฟล์ไม่ใช่รูป (400), เปลี่ยนปกแล้วไฟล์เก่าถูกลบ
+
+> คอมเมนต์ในโค้ดทุกไฟล์เป็นภาษาไทย ไล่อ่านจาก `backend/server.js` ก่อนได้เลย

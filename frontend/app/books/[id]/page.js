@@ -4,16 +4,18 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { getBook, deleteBook, fileUrl } from "@/lib/api";
 
+// หน้า "/books/1" = รายละเอียดหนังสือ (READ ตาม id) + ปุ่มแก้ไข/ลบ
 export default function BookDetailPage() {
-  const { id } = useParams();
+  const { id } = useParams();     // id จาก URL
   const router = useRouter();
   const [b, setB] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    getBook(id).then(setB).catch((e) => setError(e.message));
+    getBook(id).then(setB).catch((e) => setError(e.message)); // ไม่พบ -> backend ตอบ 404 -> ไปตกที่ catch
   }, [id]);
 
+  // ลบแล้วกลับหน้าแรก
   const handleDelete = async () => {
     if (!confirm(`ต้องการลบ "${b.title}" ใช่หรือไม่?`)) return;
     await deleteBook(b.id);

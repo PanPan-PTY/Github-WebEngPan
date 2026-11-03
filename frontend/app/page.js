@@ -1,16 +1,19 @@
-"use client";
+"use client"; // ใช้ state/effect จึงต้องเป็น client component
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getBooks, getCatalogs, deleteBook, fileUrl } from "@/lib/api";
 
+// หน้าแรก "/" = รายการหนังสือ (READ ทั้งหมด) + ค้นหา + กรองตาม catalog + ปุ่มลบ
 export default function HomePage() {
-  const [books, setBooks] = useState([]);
-  const [catalogs, setCatalogs] = useState([]);
-  const [q, setQ] = useState("");
-  const [catalogId, setCatalogId] = useState("");
-  const [loading, setLoading] = useState(true);
+  // ---------- state ----------
+  const [books, setBooks] = useState([]);         // รายการหนังสือที่แสดง
+  const [catalogs, setCatalogs] = useState([]);   // ไว้ทำ dropdown กรอง
+  const [q, setQ] = useState("");                 // คำค้น
+  const [catalogId, setCatalogId] = useState(""); // catalog ที่เลือกกรอง ("" = ทั้งหมด)
+  const [loading, setLoading] = useState(true);   // กำลังโหลดหรือไม่
   const [error, setError] = useState("");
 
+  // โหลดหนังสือจาก backend ตามคำค้น/ตัวกรองปัจจุบัน
   const load = async () => {
     try {
       setLoading(true);
@@ -19,18 +22,22 @@ export default function HomePage() {
     } catch (e) {
       setError("เชื่อมต่อ API ไม่ได้: " + e.message);
     } finally {
-      setLoading(false);
+      setLoading(false); // ไม่ว่าสำเร็จหรือพลาดก็เลิกโชว์ "กำลังโหลด"
     }
   };
 
+  // โหลด catalog ครั้งเดียวตอนเปิดหน้า (ไว้ทำ dropdown)
   useEffect(() => { getCatalogs().then(setCatalogs).catch(() => {}); }, []);
 
+  // โหลดหนังสือใหม่ทุกครั้งที่ q หรือ catalogId เปลี่ยน
+  // setTimeout 300ms = debounce: รอให้หยุดพิมพ์ก่อนค่อยยิง API ไม่ยิงทุกตัวอักษร
   useEffect(() => {
-    const t = setTimeout(load, 300); // debounce การค้นหา
+    const t = setTimeout(load, 300);
     return () => clearTimeout(t);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [q, catalogId]);
 
+  // ลบ: ถามยืนยัน -> เรียก API -> โหลดรายการใหม่
   const handleDelete = async (b) => {
     if (!confirm(`ต้องการลบ "${b.title}" ใช่หรือไม่?`)) return;
     try { await deleteBook(b.id); load(); } catch (e) { setError(e.message); }
@@ -47,6 +54,7 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* แถบค้นหา + กรอง: พิมพ์/เลือกแล้ว state เปลี่ยน -> useEffect ด้านบนยิง API ใหม่ให้เอง */}
       <div className="toolbar">
         <input className="input" placeholder="🔍 ค้นหาชื่อหนังสือ / ผู้แต่ง..." value={q} onChange={(e) => setQ(e.target.value)} />
         <select className="input" value={catalogId} onChange={(e) => setCatalogId(e.target.value)}>
@@ -57,12 +65,14 @@ export default function HomePage() {
 
       {error && <div className="alert alert-error">{error}</div>}
 
+      {/* แสดงผล 3 แบบ: กำลังโหลด / ไม่มีข้อมูล / มีข้อมูล */}
       {loading ? (
         <div className="empty">กำลังโหลด...</div>
       ) : books.length === 0 ? (
         <div className="empty">ยังไม่มีหนังสือ <Link href="/books/new" style={{ color: "var(--primary)" }}>เพิ่มเล่มแรก</Link></div>
       ) : (
         <div className="grid">
+          {/* .map = วนทำการ์ดทีละเล่ม  key ต้องไม่ซ้ำ (ใช้ id) */}
           {books.map((b) => (
             <div className="card" key={b.id}>
               <Link href={`/books/${b.id}`} className="card-img">
